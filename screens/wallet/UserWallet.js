@@ -133,7 +133,7 @@ const UserWallet = observer(({ navigation }) => {
           process.env.EXPO_PUBLIC_APP_KIND === 'user'
             ? MobileType.USER_APP
             : MobileType.SHOP_APP,
-          process.env.EXPO_PUBLIC_APP_KIND === 'shop' ? userStore.shopId : null,
+          process.env.EXPO_PUBLIC_APP_KIND === 'shop' ? userStore.shopId : undefined,
         )
         .then((v) => {
           console.log('isExistsMobileAccountToken :', v);
