@@ -21,8 +21,11 @@ export async function activatePushNotification(
     console.log('3');
     const os = Platform.OS === 'android' ? 'android' : 'iOS';
     console.log('4');
+
+    const now = new Date();
     console.log(
       'activatePushNotification > ' +
+        `[${now.toLocaleDateString()} ${now.toLocaleTimeString()}] ` +
         'alert status : ' +
         ret +
         ', token : ' +
@@ -40,6 +43,7 @@ export async function activatePushNotification(
     );
     await Clipboard.setStringAsync(
       'activatePushNotification > ' +
+        `[${now.toLocaleDateString()} ${now.toLocaleTimeString()}] ` +
         'alert status : ' +
         ret +
         ', token : ' +
