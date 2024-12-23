@@ -93,6 +93,7 @@
   "phone.body.text.a": "전화번호 전송 후에 문자 메세지의 인증 코드 3개를 문자에 표시된 번호(#1, #2, #3)에 맞추어 입력하고 인증을 진행해 주세요.",
   "phone.body.text.b": "유효시간",
   "phone.body.input.a": "국가 코드 번호",
+  "phone.body.input.b": "인증 코드 입력",
 
   "shop.alert.reg.fail": "상점 등록에 실패하였습니다.",
   "shop.alert.reg.done": "상점이 등록 되었습니다.",

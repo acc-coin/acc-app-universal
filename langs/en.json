@@ -94,6 +94,7 @@
   "phone.body.text.a": "Enter the three one-time passwords (OTP) from the SMS you received. Match the numbers in the text (#1, #2, #3) to verify.",
   "phone.body.text.b": "Expiring in",
   "phone.body.input.a": "Country code number",
+  "phone.body.input.b": "Enter the OTP code",
 
   "shop.alert.reg.fail": "Your store/shop registration failed.",
   "shop.alert.reg.done": "Your store/shop is registered successfully.",

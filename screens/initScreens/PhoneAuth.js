@@ -23,30 +23,16 @@ import {
 import { WrapButton } from '../../components/styled/button';
 
 const registerSchema = yup.object().shape({
-  n1: yup
+  authCode: yup
     .string()
     .required()
     .matches(/^[0-9]+$/, 'Must be only digits')
-    .min(2, 'Must be exactly 2 digits')
-    .max(2, 'Must be exactly 2 digits'),
-  n2: yup
-    .string()
-    .required()
-    .matches(/^[0-9]+$/, 'Must be only digits')
-    .min(2, 'Must be exactly 2 digits')
-    .max(2, 'Must be exactly 2 digits'),
-  n3: yup
-    .string()
-    .required()
-    .matches(/^[0-9]+$/, 'Must be only digits')
-    .min(2, 'Must be exactly 2 digits')
-    .max(2, 'Must be exactly 2 digits'),
+    .min(6, 'Must be exactly 6 digits')
+    .max(6, 'Must be exactly 6 digits'),
 });
 
 const registerInitialValues = {
-  n1: '',
-  n2: '',
-  n3: '',
+  authCode: '',
 };
 
 const PhoneAuth = observer(({ navigation }) => {
@@ -214,8 +200,7 @@ const PhoneAuth = observer(({ navigation }) => {
 
     onSubmit: (values, { resetForm }) => {
       console.log('form values :', values);
-      const authNums = values.n1 + values.n2 + values.n3;
-      submitPhone(authNums)
+      submitPhone(values.authCode)
         .then((r) => {
           if (r === true) {
             completeAuth();
@@ -318,7 +303,7 @@ const PhoneAuth = observer(({ navigation }) => {
                 {timeLeft.s}
               </RobotoRegularText>
             ) : null}
-            <FormControl isRequired={true} isInvalid={!!formik.errors.n1}>
+            <FormControl isRequired={true} isInvalid={!!formik.errors.authCode}>
               <Input
                 mt={5}
                 style={{
@@ -334,62 +319,11 @@ const PhoneAuth = observer(({ navigation }) => {
                     color: '#12121D',
                   }}
                   keyboardType='number-pad'
-                  placeholder='#1'
-                  onChangeText={formik.handleChange('n1')}
-                  onBlur={formik.handleBlur('n1')}
-                  value={formik.values?.n1}
-                />
-              </Input>
-            </FormControl>
-            <FormControl
-              size='md'
-              isRequired={true}
-              isInvalid={!!formik.errors.n2}>
-              <Input
-                mt={5}
-                style={{
-                  height: 48,
-                  borderWidth: 1,
-                  borderColor: '#E4E4E4',
-                }}>
-                <InputField
-                  style={{
-                    fontFamily: 'Roboto-Medium',
-                    lineHeight: 20,
-                    fontSize: 15,
-                    color: '#12121D',
-                  }}
-                  keyboardType='number-pad'
-                  placeholder='#2'
-                  onChangeText={formik.handleChange('n2')}
-                  onBlur={formik.handleBlur('n2')}
-                  value={formik.values?.n2}
-                />
-              </Input>
-            </FormControl>
-            <FormControl
-              size='md'
-              isRequired={true}
-              isInvalid={!!formik.errors.n3}>
-              <Input
-                mt={5}
-                style={{
-                  height: 48,
-                  borderWidth: 1,
-                  borderColor: '#E4E4E4',
-                }}>
-                <InputField
-                  style={{
-                    fontFamily: 'Roboto-Medium',
-                    lineHeight: 20,
-                    fontSize: 15,
-                    color: '#12121D',
-                  }}
-                  keyboardType='number-pad'
-                  placeholder='#3'
-                  onChangeText={formik.handleChange('n3')}
-                  onBlur={formik.handleBlur('n3')}
-                  value={formik.values?.n3}
+                  textContentType="oneTimeCode"
+                  placeholder={t('phone.body.input.b')}
+                  onChangeText={formik.handleChange('authCode')}
+                  onBlur={formik.handleBlur('authCode')}
+                  value={formik.values?.authCode}
                 />
               </Input>
             </FormControl>
