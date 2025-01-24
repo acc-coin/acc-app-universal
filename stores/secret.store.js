@@ -11,15 +11,12 @@ class SecretStore {
   showQRSheet = false;
   showTermSheet = false;
   showPrivacySheet = false;
+  showMAFSheet = false;
 
   constructor() {
     makeAutoObservable(this);
-    console.log('secret store > constructor > network :', this.network);
-    // getClient('store', this.network).then((it) => {
-    //   this.client = it.client;
-    //   this.address = it.address;
-    // });
   }
+
   reset() {
     this.pKey = '';
     this.address = '';
@@ -30,6 +27,7 @@ class SecretStore {
     this.showQRSheet = false;
     this.showTermSheet = false;
     this.showPrivacySheet = false;
+    this.showMAFSheet = false;
   }
   setPKey = (key) => {
     this.pKey = key;
@@ -59,6 +57,9 @@ class SecretStore {
   };
   setShowPrivacySheet = (show) => {
     this.showPrivacySheet = show;
+  };
+  setShowMAFSheet = (show) => {
+    this.showMAFSheet = show;
   };
 }
 

@@ -80,8 +80,11 @@ import Transfer from '../screens/wallet/Transfer';
 import TransferMainChainHistory from '../screens/wallet/TransferMainChainHistory';
 import { RobotoSemiBoldText } from '../components/styled/text';
 import UpdateActionSheet from '../screens/UpdateActionSheet';
+import MAFActionSheet from '../screens/MAFActionSheet';
 import secretStore from '../stores/secret.store';
 import Network from '../screens/initScreens/Network';
+import 'mychips-react-sdk';
+import { MCOfferwallSDK } from 'mychips-react-sdk';
 
 const InitStack = createNativeStackNavigator();
 const MainStack = createNativeStackNavigator();
@@ -94,6 +97,13 @@ Text.defaultProps.allowFontScaling = false;
 // TextInput 적용
 TextInput.defaultProps = TextInput.defaultProps || {};
 TextInput.defaultProps.allowFontScaling = false;
+
+import { TurboModuleRegistry } from 'react-native';
+
+const WebViewModule = TurboModuleRegistry.get('RNCWebViewModule');
+if (!WebViewModule) {
+  console.error('RNCWebViewModule not found in TurboModuleRegistry');
+}
 
 I18N.use(initReactI18next) // passes i18n down to react-i18next
   .init({
@@ -138,7 +148,16 @@ const App = observer(() => {
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const { i18n } = useTranslation();
 
+
   usePushNotification(userStore, loyaltyStore, pinStore);
+
+  useEffect(() => {
+    const uiManager = global?.nativeFabricUIManager ? 'Fabric' : 'Paper';
+    console.log(`Using ${uiManager}`);
+    MCOfferwallSDK.init(process.env.EXPO_PUBLIC_MYCHIPS_API_KEY);
+    console.log('================= App > MCOfferwallSDK.init:', process.env.EXPO_PUBLIC_MYCHIPS_API_KEY); 
+  }, []);
+
   useEffect(() => {
     SystemUI.setBackgroundColorAsync(userStore.backgroundColor);
     const rehydrate = async () => {
@@ -318,6 +337,15 @@ const App = observer(() => {
         <RootPaddingBox></RootPaddingBox>
         <BottomSheetModalProvider>
           <NavigationContainer
+            linking={{
+              prefixes: ['acc-coin-user://'],
+              config: {
+                screens: {
+                  Sitemap: '_sitemap',
+                  NotFound: '*',
+                },
+              },
+            }}
             independent={true}
             ref={navigationRef}
             onReady={() =>
@@ -355,6 +383,7 @@ const App = observer(() => {
               <QRActionSheet />
               <UpdateActionSheet />
               <TermActionSheet />
+              <MAFActionSheet />
               <PrivacyActionSheet />
               <ShopNotification />
               <MileageCancelNotification />
@@ -429,7 +458,12 @@ function InitStackScreen() {
     </InitStack.Navigator>
   );
 }
-
+function Sitemap() {
+  return <Text>This is the Sitemap page</Text>;
+}
+function NotFoundScreen() {
+  return <Text>Page Not Found</Text>;
+}
 function MainStackScreen(userStore) {
   return (
     <MainStack.Navigator
@@ -456,6 +490,7 @@ function MainStackScreen(userStore) {
           }}
         />
         <MainStack.Screen name='QRActionSheet' component={QRActionSheet} />
+        <MainStack.Screen name='Sitemap' component={Sitemap} />
         <MainStack.Screen
           name='PointAgentHistory'
           component={PointAgentHistory}

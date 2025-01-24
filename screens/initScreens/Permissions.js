@@ -44,13 +44,13 @@ const Permissions = observer(({ navigation }) => {
   function agreePermissions() {
     if (Device.isDevice) {
       if (true || checkPushToken()) {
-        navigation.navigate('Term');
+        navigation.navigate('InitPinCodeScreen');
       } else {
         alert(t('permission.agree.alert'));
         userStore.setPermissionsCount();
       }
     } else {
-      navigation.navigate('Term');
+      navigation.navigate('InitPinCodeScreen');
     }
   }
   return (

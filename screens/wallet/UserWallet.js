@@ -29,14 +29,7 @@ import {
   toFix,
   isEmpty,
 } from '../../utils/convert';
-import {
-  ScrollView,
-  Dimensions,
-  StyleSheet,
-  View,
-  ActivityIndicator,
-  Text,
-} from 'react-native';
+import { ScrollView, Dimensions, StyleSheet, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { WrapBox, WrapDivider } from '../../components/styled/layout';
 import {
@@ -70,8 +63,10 @@ import { getSecureValue } from '../../utils/secure.store';
 import { Wallet } from '@ethersproject/wallet';
 import { isAddress } from '@ethersproject/address';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import Entypo from '@expo/vector-icons/Entypo';
 import PointDistributor from '../../components/PointDistributor';
 import { MobileType } from 'acc-sdk-client-v2';
+import { MCOfferwallSDK } from 'mychips-react-sdk';
 
 const UserWallet = observer(({ navigation }) => {
   const { t } = useTranslation();
@@ -114,6 +109,8 @@ const UserWallet = observer(({ navigation }) => {
   const [availableBridge, setAvailableBridge] = useState(false);
   const [availableExchange, setAvailableExchange] = useState(false);
 
+  
+
   function isEmptyObject(obj) {
     return Object.keys(obj).length === 0;
   }
@@ -126,6 +123,7 @@ const UserWallet = observer(({ navigation }) => {
       '===== >>> UserWallet > useEffect > userStore.currentRoute',
       userStore.currentRoute,
     );
+
     secretStore.client.ledger &&
       secretStore.client.ledger
         .isExistsMobileAccountToken(
@@ -133,7 +131,9 @@ const UserWallet = observer(({ navigation }) => {
           process.env.EXPO_PUBLIC_APP_KIND === 'user'
             ? MobileType.USER_APP
             : MobileType.SHOP_APP,
-          process.env.EXPO_PUBLIC_APP_KIND === 'shop' ? userStore.shopId : undefined,
+          process.env.EXPO_PUBLIC_APP_KIND === 'shop'
+            ? userStore.shopId
+            : undefined,
         )
         .then((v) => {
           console.log('isExistsMobileAccountToken :', v);
@@ -147,6 +147,7 @@ const UserWallet = observer(({ navigation }) => {
   useEffect(() => {
     console.log('================= UserWallet > userStore', userStore);
     console.log('================= UserWallet > secretStore', secretStore);
+
 
     if (process.env.EXPO_PUBLIC_APP_KIND === 'user')
       setWalletData(loyaltyStore.balanceData);
@@ -205,7 +206,8 @@ const UserWallet = observer(({ navigation }) => {
     const id = setInterval(async () => {
       try {
         if (process.env.EXPO_PUBLIC_APP_KIND === 'user') await setWalletData();
-        if (process.env.EXPO_PUBLIC_APP_KIND === 'shop') await setShopData(null);
+        if (process.env.EXPO_PUBLIC_APP_KIND === 'shop')
+          await setShopData(null);
       } catch (e) {
         console.log('setWalletData > e1:', e);
       }
@@ -527,60 +529,64 @@ const UserWallet = observer(({ navigation }) => {
       }>
       {init === true ? (
         <>
-          <HStack alignItems='center' justifyContent='flex-end'>
-            <SubHeaderText
-              pr={10}
-              color={
-                process.env.EXPO_PUBLIC_APP_KIND === 'user' ? 'white' : 'black'
-              }>
-              {secretStore.network === 'testnet' ? 'Testnet' : ''}
-            </SubHeaderText>
-            <Button
-              bg='#5C66D5'
-              rounded='$xl'
-              h={26}
-              w={138}
-              variant='link'
-              onPress={async () => {
-                await Clipboard.setStringAsync(secretStore.address);
+          <VStack>
+            <HStack alignItems='center' justifyContent='flex-end'>
+              <SubHeaderText
+                pr={10}
+                color={
+                  process.env.EXPO_PUBLIC_APP_KIND === 'user'
+                    ? 'white'
+                    : 'black'
+                }>
+                {secretStore.network === 'testnet' ? 'Testnet' : ''}
+              </SubHeaderText>
+              <Button
+                bg='#5C66D5'
+                rounded='$xl'
+                h={26}
+                w={138}
+                variant='link'
+                onPress={async () => {
+                  await Clipboard.setStringAsync(secretStore.address);
 
-                toast.show({
-                  placement: 'top',
-                  duration: 500,
-                  render: ({ id }) => {
-                    const toastId = 'toast-' + id;
-                    return (
-                      <Toast
-                        nativeID={toastId}
-                        action='attention'
-                        variant='solid'>
-                        <VStack space='xs'>
-                          <ToastDescription>
-                            {t('wallet.toast.copy')}
-                          </ToastDescription>
-                        </VStack>
-                      </Toast>
-                    );
-                  },
-                });
-              }}>
-              <ParaText style={{ color: '#fff' }}>
-                {truncateMiddleString(secretStore.address || '', 8)}
-              </ParaText>
-              <Image
-                ml={9}
-                my={3}
-                h={13.3}
-                w={13.3}
-                alt='alt'
-                source={require('../../assets/images/copy.png')}
-              />
-            </Button>
-          </HStack>
+                  toast.show({
+                    placement: 'top',
+                    duration: 500,
+                    render: ({ id }) => {
+                      const toastId = 'toast-' + id;
+                      return (
+                        <Toast
+                          nativeID={toastId}
+                          action='attention'
+                          variant='solid'>
+                          <VStack space='xs'>
+                            <ToastDescription>
+                              {t('wallet.toast.copy')}
+                            </ToastDescription>
+                          </VStack>
+                        </Toast>
+                      );
+                    },
+                  });
+                }}>
+                <ParaText style={{ color: '#fff' }}>
+                  {truncateMiddleString(secretStore.address || '', 8)}
+                </ParaText>
+                <Image
+                  ml={9}
+                  my={3}
+                  h={13.3}
+                  w={13.3}
+                  alt='alt'
+                  source={require('../../assets/images/copy.png')}
+                />
+              </Button>
+            </HStack>
+          </VStack>
           <Carousel
             style={{ backgroundColor: 'red' }}
             layout={'default'}
-            ref={(ref) => (this.carousel = ref)}
+            ref={(ref) => (this._carousel = ref)}
             // inactiveSlideScale={0.9}
             // inactiveSlideOpacity={0.3}
             sliderWidth={width}
@@ -602,7 +608,47 @@ const UserWallet = observer(({ navigation }) => {
                               appName: t('app.name'),
                             })}
                           </SubHeaderText>
-                          <Box mt={20} w='$full'>
+                          <Box
+                            mt={20}
+                            mb={10}
+                            style={{
+                              width: '100%',
+                            }}>
+                            <Button
+                              onPress={() => secretStore.setShowMAFSheet(true)}
+                              bg='transparent'
+                              w='100%'
+                              h={130}
+                              py={10}
+                              justifyContent='center'
+                              alignItems='center'
+                              borderWidth={1}
+                              borderColor='#E4E4E4'
+                              borderRadius={10}>
+                              <VStack alignItems='center' space='sm'>
+                                <HeaderText fontSize={21} color='white'>
+                                  Get free ACC points
+                                </HeaderText>
+                                <HStack
+                                  alignItems='center'
+                                  space='lg'
+                                  backgroundColor='#5C66D5'
+                                  rounded='$lg'
+                                  px={20}
+                                  py={10}>
+                                  <ParaText color='white' fontSize={15}>
+                                    Get points now
+                                  </ParaText>
+                                  <Entypo
+                                    name='arrow-right'
+                                    size={20}
+                                    color='white'
+                                  />
+                                </HStack>
+                              </VStack>
+                            </Button>
+                          </Box>
+                          <Box mt={10} w='$full'>
                             <Box>
                               <Box bg='white' rounded='$xl'>
                                 <HStack
