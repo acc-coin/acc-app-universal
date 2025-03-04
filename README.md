@@ -16,6 +16,8 @@ eas update --branch preview --message "i18n 26-2"
 
 ### submit
 
+eas submit -p ios --latest --profile production
+
 ### device
 
 eas device:create

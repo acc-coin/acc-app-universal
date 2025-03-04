@@ -67,6 +67,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import PointDistributor from '../../components/PointDistributor';
 import { MobileType } from 'acc-sdk-client-v2';
 import { MCOfferwallSDK } from 'mychips-react-sdk';
+import { debounce } from 'lodash';
 
 const UserWallet = observer(({ navigation }) => {
   const { t } = useTranslation();
@@ -109,8 +110,6 @@ const UserWallet = observer(({ navigation }) => {
   const [availableBridge, setAvailableBridge] = useState(false);
   const [availableExchange, setAvailableExchange] = useState(false);
 
-  
-
   function isEmptyObject(obj) {
     return Object.keys(obj).length === 0;
   }
@@ -147,7 +146,6 @@ const UserWallet = observer(({ navigation }) => {
   useEffect(() => {
     console.log('================= UserWallet > userStore', userStore);
     console.log('================= UserWallet > secretStore', secretStore);
-
 
     if (process.env.EXPO_PUBLIC_APP_KIND === 'user')
       setWalletData(loyaltyStore.balanceData);
@@ -959,6 +957,11 @@ const UserWallet = observer(({ navigation }) => {
                                           }}
                                           keyboardType='number-pad'
                                           onChangeText={setTokenAmountForPoint}
+                                          // onChangeText={debounce(
+                                          //   (text) =>
+                                          //     setTokenAmountForPoint(text),
+                                          //   500,
+                                          // )}
                                           onBlur={pointFormik.handleBlur(
                                             'points',
                                           )}

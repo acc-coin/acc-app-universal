@@ -1,0 +1,82 @@
+{
+  "expo": {
+    "name": "ACCcoin",
+    "slug": "acc-coin-user",
+    "version": "0.7.7",
+    "scheme": "acc-coin-user",
+    "orientation": "portrait",
+    "icon": "./assets/icons/iosOnly/ios-1024.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/icons/acc-icon-300.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "buildNumber": "5",
+      "bundleIdentifier": "com.home2bit.acc.user",
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        },
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "versionCode": 5,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icons/acc-icon-512.png",
+        "backgroundColor": "#FFC742"
+      },
+      "permissions": ["android.permission.INTERNET"],
+      "package": "com.home2bit.acc.user",
+      "googleServicesFile": "./google-services.json",
+      "allowBackup": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icons/acc-icon-200.png",
+          "color": "#ffffff"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          },
+          "ios": {
+            "deploymentTarget": "15.1"
+          }
+        }
+      ],
+      "expo-localization",
+      "expo-font",
+      "expo-secure-store"
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "5b7f4e88-5f32-4ad6-a63a-9e6dbee48c59"
+      }
+    },
+    "owner": "home2bitacc",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/5b7f4e88-5f32-4ad6-a63a-9e6dbee48c59"
+    }
+  }
+}

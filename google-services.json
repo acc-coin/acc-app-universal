@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "694365659157",
+    "project_id": "acc-coin-user",
+    "storage_bucket": "acc-coin-user.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694365659157:android:42d9e3aa8389b00d696e1c",
+        "android_client_info": {
+          "package_name": "com.home2bit.acc.user"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlvr-SIrLEI-ru2K8v2jCv5N2T8NQAx3A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
